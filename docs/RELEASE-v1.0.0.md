@@ -7,12 +7,12 @@ The first public release of an HP ProBook 450 G7 OpenCore configuration targetin
 ## Release highlights
 
 - **OpenCore:** configured boot for the HP ProBook 450 G7.
-- **Graphics:** internal display brightness control plus tested HDMI and USB-C DisplayPort.
-- **Wireless:** original Wi-Fi card replaced with Intel AX210 for improved stability and ForbiddenItlwm integration.
-- **Networking:** Realtek 1 Gbit/s full-duplex Ethernet; earlier link issue traced to the cable.
+- **Graphics:** internal display brightness control plus working HDMI and USB-C DisplayPort.
+- **Wireless:** original Wi-Fi card replaced with Intel AX210 for improved stability and native macOS Wi-Fi integration through ForbiddenItlwm.
+- **Networking:** Realtek Gigabit Ethernet — working.
 - **Audio:** working outputs; internal DMIC capture achieved through an adapted LatSOFAudio build, distributed separately from the EFI.
 - **HP brightness keys:** `SSDT-HPBRT` source maps EC methods `_Q87` / `_Q86` to PS/2 notifications `0x0346` / `0x0445` for F3 / F4.
-- **Apple ecosystem:** iCloud, App Store, iMessage, FaceTime, AirDrop, Handoff and Continuity reported working on the project installation.
+- **Apple ecosystem:** iCloud, App Store, iMessage, FaceTime, AirDrop, Handoff and Continuity — working.
 
 ## Installation notes
 

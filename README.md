@@ -14,13 +14,13 @@ An OpenCore EFI configuration developed and tested on an **HP ProBook 450 G7** w
 | --- | --- |
 | Laptop | HP ProBook 450 G7 |
 | CPU | Intel Core i7-10610U |
-| Operating system | macOS Tahoe 26.x (tested project installation: 26.7.3) |
+| Operating system | macOS Tahoe 26.x (working project installation: 26.7.3) |
 | Bootloader | OpenCore |
 | SMBIOS | MacBookPro16,2 |
 | Wireless adapter | **Intel AX210** — replacement for the original Wi-Fi card |
-| Wireless integration | ForbiddenItlwm-based configuration |
+| Wireless integration | Native macOS Wi-Fi integration through ForbiddenItlwm |
 
-The original Wi-Fi module was replaced with an **Intel AX210** both to improve wireless/Bluetooth stability and to make use of the **ForbiddenItlwm** project. The published EFI is intended for this modified hardware configuration; do not assume it will work with the factory wireless card.
+The original Wi-Fi module was replaced with an **Intel AX210** both to improve wireless/Bluetooth stability and to enable **native macOS Wi-Fi integration through ForbiddenItlwm**. The published EFI is intended for this modified hardware configuration; do not assume it will work with the factory wireless card.
 
 ## Feature status
 
@@ -32,14 +32,13 @@ Results reported for the project laptop, not guaranteed for other hardware revis
 | Internal display | Working, including macOS brightness adjustment |
 | Brightness shortcuts | Project includes a dedicated **F3/F4 ACPI hotkey patch**; see the verification note below |
 | Keyboard | Internal keyboard with Italian PC layout |
-| Ethernet | Realtek Gigabit Ethernet, negotiated at **1000BASE-T full duplex**; a faulty cable was the cause of earlier link issues |
-| Wi-Fi and Bluetooth | Stable after Intel AX210 replacement |
-| HDMI | External video output tested |
-| USB-C DisplayPort | External DisplayPort output tested |
+| Ethernet | Realtek Gigabit Ethernet — Working |
+| Wi-Fi and Bluetooth | Working — native macOS Wi-Fi integration through **ForbiddenItlwm** with Intel AX210 |
+| HDMI | External video output working |
+| USB-C DisplayPort | External DisplayPort output working |
 | Audio output | Working |
 | Internal microphone | Working with a **separately built, HP-adapted LatSOFAudio kext**, not simply the standard audio configuration |
-| Apple services | iCloud, App Store, iMessage, FaceTime, AirDrop (both directions), and Handoff tested |
-| Continuity | Reported working on this installation |
+| Apple services | iCloud, App Store, iMessage, FaceTime, AirDrop (both directions), Handoff and Continuity — Working |
 
 ### Important: brightness patch verification
 

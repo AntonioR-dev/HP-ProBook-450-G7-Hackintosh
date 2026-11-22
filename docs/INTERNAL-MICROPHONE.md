@@ -1,10 +1,28 @@
 # HP ProBook 450 G7 — Internal Microphone and LatSOFAudio
 
-## The problem
+## Working configuration with SIP enabled
 
-Working speakers or headphones under macOS do not necessarily mean the **internal digital microphone (DMIC)** will work. The project's microphone required a **custom HP-specific build of LatSOFAudio**, separate from the ordinary OpenCore audio-output setup.
+On the project HP ProBook 450 G7 running macOS Tahoe, the internal Intel digital microphone works with System Integrity Protection fully enabled. OpenCore loads the HP build of LatSOFAudio 1.1.6. A Core Audio HAL plug-in makes its capture stream available to applications. These two downloads supplement the original v1.0.0 EFI.
 
-On the project laptop, internal microphone capture was reported working with a modified LatSOFAudio kext. The precise build used for that success is not yet associated with a reproducible public source commit and firmware revision.
+| Component | Install location |
+| --- | --- |
+| [LatSOFAudio 1.1.6 kext](../audio/LatSOFAudio-1.1.6.kext.zip) | `EFI/OC/Kexts/LatSOFAudio.kext` |
+| [LatSOFAudio HAL plug-in](../audio/LatSOFAudioPlugin.driver.zip) | `/Library/Audio/Plug-Ins/HAL/LatSOFAudioPlugin.driver` |
+
+### Installation on Tahoe
+
+1. Start with a USB copy of your working EFI. Extract both ZIP files. Copy the kext bundle into the USB EFI at the path above.
+2. In the USB `EFI/OC/config.plist`, enable a single entry for the bundle under `Kernel → Add`. Set `BundlePath` to `LatSOFAudio.kext`, `ExecutablePath` to `Contents/MacOS/LatSOFAudio`, `PlistPath` to `Contents/Info.plist`, `Arch` to `x86_64`, `MinKernel` to `25.0.0` and leave `MaxKernel` empty.
+3. In the working configuration, `NVRAM → Add → 7C436110-AB2A-4BBB-A880-FE41995C9F82 → csr-active-config` is four zero bytes (Data, `00000000`). The same GUID under `NVRAM → Delete` lists `csr-active-config` so the previous value is replaced at boot.
+4. In Finder choose **Go → Go to Folder**, enter `/Library/Audio/Plug-Ins/HAL/` and copy the extracted `LatSOFAudioPlugin.driver` bundle there. Authenticate when prompted. When building the plug-in from source, `make install` performs this copy and verifies the signature. If it prints `SEAL-OK` followed by error 150 while restarting `coreaudiod`, the installation has completed. Reboot for Core Audio to load the plug-in.
+5. Boot Tahoe from the USB EFI. Run `csrutil status` and `kmutil showloaded | grep -i LatSOF`. The working configuration reports `enabled` and `com.hackintosh.LatSOFAudio (1.1.6)`. An older 1.1.5 copy remained in `/Library/Extensions` during the project test. The loaded version distinguishes the EFI build.
+6. Select **LatSOF Internal Microphone** under **System Settings → Sound → Input**. Select the same input for a short QuickTime audio recording and play it back.
+
+### Why both components are needed
+
+The HP build embeds the IOAudioFamily code it uses and gives those classes distinct names. This removes the external `com.apple.iokit.IOAudioFamily` dependency that blocked the previous OpenCore injection attempt. With the kext alone, IORegistry showed `LatSOFKernelAudioEngine` publishing **LatSOF DMIC capture** at 48 kHz. The engine was absent from the standard `IOAudioEngine` class listing. The built-in input at 44.1 kHz belonged to AppleHDA.
+
+The HAL plug-in connects to `LatSOFAudioDevice` through its user client and exposes the Intel input to Core Audio. Microphone operation with SIP enabled was confirmed on the project laptop after installing the plug-in and rebooting. Capture after sleep/wake remains unverified for this configuration.
 
 ## Technical approach
 
@@ -34,7 +52,7 @@ LatSOFAudio and AppleHDA can interact with the same underlying controller. DSP f
 
 ## Project status
 
-- **Confirmed by project testing:** the internal microphone worked using an adapted LatSOFAudio build; ordinary audio output also worked.
+- **Working on the project laptop:** internal microphone capture with OpenCore-injected LatSOFAudio 1.1.6, the HAL plug-in and SIP enabled.
 - **Not established in the public release:** which precise LatSOFAudio source revision, build settings and SOF firmware produce the known-working binary.
 - **Not claimed:** stable microphone wake recovery, an independently confirmed gain/distortion fix, or compatibility with every HP ProBook 450 G7 hardware revision.
 

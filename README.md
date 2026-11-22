@@ -37,7 +37,7 @@ Results reported for the project laptop, not guaranteed for other hardware revis
 | HDMI | External video output working |
 | USB-C DisplayPort | External DisplayPort output working |
 | Audio output | Working |
-| Internal microphone | Working with a **separately built, HP-adapted LatSOFAudio kext**, not simply the standard audio configuration |
+| Internal microphone | Working with SIP enabled using OpenCore-injected LatSOFAudio 1.1.6 and the [Core Audio HAL plug-in](docs/INTERNAL-MICROPHONE.md) |
 | Apple services | iCloud, App Store, iMessage, FaceTime, AirDrop (both directions), Handoff and Continuity — Working |
 
 ### Important: brightness patch verification
@@ -64,7 +64,7 @@ The internal microphone needed a **modified LatSOFAudio implementation**: ordina
 
 The HP-specific development focused on enabling the **Intel SOF digital-microphone capture path**, including firmware and DSP initialization, protecting coexistence with macOS **AppleHDA**, and preventing unsupported playback / RT5682 paths from interfering with working speaker and headphone audio. Development included *capture-only*, PCI/coexistence guards, and later experimental gain and sleep/wake variants.
 
-**Distribution caveat:** the exact tested LatSOFAudio binary is **separate from the EFI**, and the repository does not yet identify a reproducible source revision plus matching firmware for that known-working binary. The source experiments are not interchangeable with a verified production build, especially for sleep/wake handling.
+On Tahoe, OpenCore loads the HP build of LatSOFAudio 1.1.6 with SIP fully enabled. Its companion HAL plug-in exposes the Intel microphone to apps. The dedicated guide includes both downloads and installation steps for the original v1.0.0 EFI.
 
 Read [Internal microphone and LatSOFAudio notes](docs/INTERNAL-MICROPHONE.md) before rebuilding or installing this kext.
 
@@ -95,7 +95,7 @@ The EFI binary distribution is attached to [GitHub Releases](https://github.com/
 ## Limitations and ongoing work
 
 - F3/F4 behavior must be validated against the exact released EFI and hardware revision.
-- The exact **working** modified LatSOFAudio binary, source commit and SOF firmware version still need to be linked together for a reproducible audio build.
+- The working microphone binaries are available. A reproducible source revision and matching SOF firmware version remain to be documented.
 - Microphone behavior **after sleep/wake**, input gain and distortion may vary by experimental LatSOFAudio version and must not be assumed solved.
 - Final boot-log review and broader testing on other HP ProBook 450 G7 configurations remain open.
 

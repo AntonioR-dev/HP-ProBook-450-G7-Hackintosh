@@ -37,7 +37,7 @@ Results reported for the project laptop, not guaranteed for other hardware revis
 | HDMI | External video output working |
 | USB-C DisplayPort | External DisplayPort output working |
 | Audio output | Working |
-| Internal microphone | Working with SIP enabled using OpenCore-injected LatSOFAudio 1.1.6 and the [Core Audio HAL plug-in](docs/INTERNAL-MICROPHONE.md) |
+| Internal microphone | Working after boot and after waking from sleep, with SIP enabled, using OpenCore-injected LatSOFAudio 1.1.6 and the [Core Audio HAL plug-in](docs/INTERNAL-MICROPHONE.md) |
 | Apple services | iCloud, App Store, iMessage, FaceTime, AirDrop (both directions), Handoff and Continuity — Working |
 
 ### Important: brightness patch verification
@@ -96,7 +96,7 @@ The EFI binary distribution is attached to [GitHub Releases](https://github.com/
 
 - F3/F4 behavior must be validated against the exact released EFI and hardware revision.
 - The working microphone binaries are available. A reproducible source revision and matching SOF firmware version remain to be documented.
-- Microphone behavior **after sleep/wake**, input gain and distortion may vary by experimental LatSOFAudio version and must not be assumed solved.
+- Input gain and distortion can vary across experimental LatSOFAudio builds.
 - Final boot-log review and broader testing on other HP ProBook 450 G7 configurations remain open.
 
 ## Credits and upstream projects

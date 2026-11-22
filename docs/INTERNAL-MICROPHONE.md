@@ -22,7 +22,7 @@ On the project HP ProBook 450 G7 running macOS Tahoe, the internal Intel digital
 
 The HP build embeds the IOAudioFamily code it uses and gives those classes distinct names. This removes the external `com.apple.iokit.IOAudioFamily` dependency that blocked the previous OpenCore injection attempt. With the kext alone, IORegistry showed `LatSOFKernelAudioEngine` publishing **LatSOF DMIC capture** at 48 kHz. The engine was absent from the standard `IOAudioEngine` class listing. The built-in input at 44.1 kHz belonged to AppleHDA.
 
-The HAL plug-in connects to `LatSOFAudioDevice` through its user client and exposes the Intel input to Core Audio. Microphone operation with SIP enabled was confirmed on the project laptop after installing the plug-in and rebooting. Capture after sleep/wake remains unverified for this configuration.
+The HAL plug-in connects to `LatSOFAudioDevice` through its user client and exposes the Intel input to Core Audio. Microphone operation with SIP enabled was confirmed on the project laptop after installing the plug-in and rebooting. On this HP ProBook 450 G7, the internal microphone also captures audio after waking from sleep with SIP fully enabled.
 
 ## Technical approach
 
@@ -54,7 +54,7 @@ LatSOFAudio and AppleHDA can interact with the same underlying controller. DSP f
 
 - **Working on the project laptop:** internal microphone capture with OpenCore-injected LatSOFAudio 1.1.6, the HAL plug-in and SIP enabled.
 - **Not established in the public release:** which precise LatSOFAudio source revision, build settings and SOF firmware produce the known-working binary.
-- **Not claimed:** stable microphone wake recovery, an independently confirmed gain/distortion fix, or compatibility with every HP ProBook 450 G7 hardware revision.
+- **Not claimed:** an independently confirmed gain/distortion fix, or compatibility with every HP ProBook 450 G7 hardware revision.
 
 ## Installation precautions
 
